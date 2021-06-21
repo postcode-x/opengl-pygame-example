@@ -7,19 +7,19 @@ from OpenGL.GLU import *
 x_vertices = [0, 0, 0, 70, 0, 0, 58, 14, 0, 105, 62, 0, 115, 14, 0, 102, 0, 0, 170, 0, 0, 154, 15, 0, 139, 95, 0, 232,
               190, 0, 159, 190, 0, 174, 173, 0, 128, 127, 0, 120, 173, 0, 141, 190, 0, 59, 190, 0, 83, 173, 0, 97,
               97, 0, 0, 0, 0]
-x_depth = 16
-J = []
+depth = 16
 
-# THESE ARE THE LINES THAT JOIN BOTH FACES
+joints = []
+
 for i in range(0, round(len(x_vertices)/3)):
 
-    J.append(x_vertices[3*i])
-    J.append(x_vertices[3*i + 1])
-    J.append(x_vertices[3*i + 2])
+    joints.append(x_vertices[3*i])
+    joints.append(x_vertices[3*i + 1])
+    joints.append(x_vertices[3*i + 2])
 
-    J.append(x_vertices[3*i])
-    J.append(x_vertices[3*i + 1])
-    J.append(x_depth)
+    joints.append(x_vertices[3*i])
+    joints.append(x_vertices[3*i + 1])
+    joints.append(depth)
 
 
 # MAIN WIREFRAME LOGIC
@@ -32,15 +32,14 @@ def x_wireframe():
     glVertexPointer(3, GL_FLOAT, 0, x_vertices)
     glDrawArrays(GL_LINE_STRIP, 0, 19)
 
-    # TRANSLATE TO ACCOMMODATE SECOND FACE
-    glTranslatef(0, 0, -x_depth)
+    # TRANSLATE
+    glTranslatef(0, 0, -depth)
 
     # SECOND FACE
     glVertexPointer(3, GL_FLOAT, 0, x_vertices)
     glDrawArrays(GL_LINE_STRIP, 0, 19)
 
-    # JOINS
-    glVertexPointer(3, GL_FLOAT, 0, J)
+    glVertexPointer(3, GL_FLOAT, 0, joints)
     glDrawArrays(GL_LINES, 0, 36)
 
     glDisableClientState(GL_VERTEX_ARRAY)
@@ -79,7 +78,7 @@ def main():
         glRotatef((74-angle*0.5)*-n, 0, 0, 1)  # 4) Rotate the object around z axis
         glRotatef((74-angle*0.5)*-6*n, 0, 1, 0)  # 3) Rotate the object around y axis
         glRotatef((74-angle*0.5)*2*n, 1, 0, 0)  # 2) Rotate the object around x axis
-        glTranslatef(-232 / 2, -190 / 2, x_depth / 2)  # 1) Center object
+        glTranslatef(-232 / 2, -190 / 2, depth / 2)  # 1) Center object
 
         x_wireframe()
 
